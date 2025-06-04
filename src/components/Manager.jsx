@@ -99,46 +99,93 @@ const Manager = () => {
           <h1 className="font-bold text-white text-2xl ml-10 mb-2">Your Passwords</h1>
         </div>
         {passwordArray.length === 0 && <div className='text-white text-lg text-center mx-auto'>No Passwords to show</div>}
-        {passwordArray.length !== 0 && <div className="table text-white w-full">
-          <table className="table-fixed md:table-auto w-full overflow-hidden rounded-xl p-5">
-            <thead className='bg-gray-900 m-5'>
-              <tr className=''>
-                <th className='py-2 max-w-150'>Website URL</th>
-                <th className='py-2 max-w-150'>Username</th>
-                <th className='py-2 max-w-150'>Password</th>
-                <th className='py-2 max-w-150'>Actions</th>
+        {passwordArray.length !== 0 && 
+        <div className="hidden md:block w-full overflow-x-auto">
+        <table className="table-auto w-full text-sm text-white rounded-xl overflow-hidden">
+          <thead className="bg-gray-900">
+            <tr>
+              <th className="px-4 py-3">Website URL</th>
+              <th className="px-4 py-3">Username</th>
+              <th className="px-4 py-3">Password</th>
+              <th className="px-4 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-gray-800">
+            {passwordArray.map((item, index) => (
+              <tr key={index} className="border-b border-gray-700">
+                <td className="px-4 py-3 text-center break-all">
+                  <a href={item.site} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                    {item.site}
+                  </a>
+                </td>
+                <td className="px-4 py-3 text-center break-all">
+                  <div className="flex items-center justify-center gap-2">
+                    {item.username}
+                    <img
+                      onClick={() => handleCopy(item.username)}
+                      className="w-[20px] cursor-pointer"
+                      src="/assets/icons/Copy.svg"
+                      alt="copy"
+                    />
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-center break-all">
+                  <div className="flex items-center justify-center gap-2">
+                    {item.password}
+                    <img
+                      onClick={() => handleCopy(item.password)}
+                      className="w-[20px] cursor-pointer"
+                      src="/assets/icons/Copy.svg"
+                      alt="copy"
+                    />
+                    <img
+                      onClick={() => console.log("Testing")}
+                      className="w-[20px] cursor-pointer"
+                      src="/assets/icons/Hide.svg"
+                      alt="hide"
+                    />
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-center">
+                  <div className="flex justify-center gap-3">
+                    <img
+                      onClick={() => EditPassword(item.id)}
+                      className="w-[25px] cursor-pointer"
+                      src="/assets/icons/Edit.svg"
+                      alt="edit"
+                    />
+                    <img
+                      onClick={() => DeletePassword(item.id)}
+                      className="w-[25px] cursor-pointer"
+                      src="/assets/icons/Delete.svg"
+                      alt="delete"
+                    />
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody className='bg-gray-800'>
-              {passwordArray.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    <td className='py-2 text-center'><a href={item.site} target='_blank'>{item.site}</a></td>
-                    <td className='py-2 text-center'><div className='flex items-center justify-center gap-2'>
-                      <a href={item.username}>{item.username}</a>
-                      <img onClick={() => handleCopy(item.username)} className='w-[20px] cursor-pointer' src="/assets/icons/Copy.svg" alt="copy" />
-                    </div></td>
-                    <td className='py-2 text-center'>
-                      <div className='flex items-center justify-center gap-2'>
-                        <a href={item.password}>{item.password}</a>
-                        <img onClick={() => handleCopy(item.password)} className='w-[20px] cursor-pointer' src="/assets/icons/Copy.svg" alt="copy" />
-                        <img onClick={() => { console.log("Testing") }} className='w-[20px] cursor-pointer' src="/assets/icons/Hide.svg" alt="Hide" />
-                      </div>
-                    </td>
-                    <td className='py-2 text-center'>
-                      <div className='flex gap-3 items-center justify-center'>
-                        <span><img className='w-[25px] cursor-pointer' onClick={() => { EditPassword(item.id) }} src="/assets/icons/Edit.svg" alt="" /></span>
-                        <span><img className='w-[25px] cursor-pointer' onClick={() => { DeletePassword(item.id) }} src="/assets/icons/Delete.svg" alt="" /></span>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
+            ))}
+          </tbody>
+        </table>
+      </div>}
 
-
-            </tbody>
-          </table>
-        </div>}
+      {passwordArray.length !== 0 && <div className="md:hidden space-y-4 w-full">
+        {passwordArray.map((item, index) => (
+          <div key={index} className="bg-gray-800 p-4 rounded-xl shadow-md text-white">
+            <p className="mb-1"><strong>Website:</strong> <a className="text-blue-400 break-all" href={item.site} target="_blank" rel="noopener noreferrer">{item.site}</a></p>
+            <p className="mb-1 flex items-center gap-2"><strong>Username:</strong> {item.username}
+              <img onClick={() => handleCopy(item.username)} className="w-[20px] cursor-pointer" src="/assets/icons/Copy.svg" alt="copy" />
+            </p>
+            <p className="mb-1 flex items-center gap-2"><strong>Password:</strong> {item.password}
+              <img onClick={() => handleCopy(item.password)} className="w-[20px] cursor-pointer" src="/assets/icons/Copy.svg" alt="copy" />
+              <img onClick={() => console.log("Testing")} className="w-[20px] cursor-pointer" src="/assets/icons/Hide.svg" alt="Hide" />
+            </p>
+            <div className="flex justify-end gap-3 mt-2">
+              <img onClick={() => EditPassword(item.id)} className="w-[25px] cursor-pointer" src="/assets/icons/Edit.svg" alt="edit" />
+              <img onClick={() => DeletePassword(item.id)} className="w-[25px] cursor-pointer" src="/assets/icons/Delete.svg" alt="delete" />
+            </div>
+          </div>
+        ))}
+      </div>}
 
       </div>
     </>
